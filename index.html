@@ -15,7 +15,91 @@
 
     <link rel="stylesheet" href="src/style.css" />
   </head>
-  <body>
+  <body class="ff-main fw-body fs-body">
+    <header class="header | fs-primary-heading fw-title">
+      <div class="header__container">
+        <img src="images/logo.svg" alt="Logo" />
+        <p class="header__title">Busy Day</p>
+      </div>
+    </header>
+
+    <main>
+      <div class="main__header">
+        <div class="main__header-info">
+          <div class="labelWelcome fs-primary-heading fw-title">
+            Hello, Emily!
+          </div>
+          <div class="currentInfo fw-label fs-secondary-heading">
+            <div class="labelDate">Tue, Feb 27</div>
+            <div class="labelWether">
+              <span id="wetherIcon"><img src="images/sun.svg" alt="" /></span>
+              <p id="temprature">67 C</p>
+            </div>
+          </div>
+        </div>
+        <div class="main__header-action">
+          <div class="addList"><button>Add List</button></div>
+          <form class="search"><input type="search" /></form>
+          <div class="transform">
+            <div class="transform-sort"><button>Sort</button></div>
+            <div class="transform-filter"><button>Filter</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="main__body">
+
+        <div class="main__body-card main__body-card-color-0">
+
+
+          <div class="card__header fs-secondary-heading fw-sub-heading">
+            <div class="card__header-titleContainer">
+              <div class="card__header-title">Daily To-Do</div>
+              <div class="card__header-trash">
+                <img src="images/trash.svg" alt="trash btn" />
+              </div>
+            </div>
+
+            <div class="card__header-dateContainer">
+              <div class="card__header-dateIcon">
+                <img src="images/calender.svg" alt="" />
+              </div>
+              <div class="card__header-date">Today</div>
+            </div>
+          </div>
+
+
+          <div class="card__body">
+            <div class="card__item-0 completed">
+              <div class="card__status"></div>
+              <div class="card__item-title">Stay Positive</div>
+              <div class="card__remove"></div>
+            </div>
+            <div class="card__item-1">
+              <div class="card__status"></div>
+              <div class="card__item-title">Deep clean floors.</div>
+              <div class="card__remove"></div>
+            </div>
+            <div class="card__item-2">
+              <div class="card__status"></div>
+              <div class="card__item-title">Wash windows</div>
+              <div class="card__remove"></div>
+            </div>
+          </div>
+
+          <form class="card__footer">
+            <input type="text" placeholder="+ Add a task" id="0" />
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer fs-footer">
+      <div class="footer__container">
+        <p>&copy; 2024 Busy Day by ScriptedSprouts</p>
+      </div>
+    </footer>
+
     <script type="module" src="src/main.js"></script>
   </body>
 </html>
