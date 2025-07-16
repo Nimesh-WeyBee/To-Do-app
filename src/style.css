@@ -307,6 +307,7 @@ main {
   border-radius: 0.5rem;
   padding: 1rem;
   max-height: fit-content;
+  border: 2px solid black;
 }
 /* Individual list color */
 .main__body-card-color-0 {
@@ -329,7 +330,6 @@ main {
 .card__header {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
 }
 
 /* title text */

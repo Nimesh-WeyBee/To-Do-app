@@ -151,27 +151,72 @@ function setCurrentWeather() {
   }
 }
 
-// Filter data based on search query
-function filterData(query) {
-  if (!query.trim()) return currentData.lists;
-  const q = query.trim().toLowerCase();
-  return currentData.lists
-    .map((list) => {
-      // Match list title
-      const matchList = list.l_title.toLowerCase().includes(q);
-      // Match tasks
-      const matchedTasks = list.tasks.filter((task) =>
-        task.t_name.toLowerCase().includes(q)
-      );
-      if (matchList || matchedTasks.length) {
-        return {
-          ...list,
-          tasks: matchList ? list.tasks : matchedTasks,
-        };
-      }
-      return null;
-    })
-    .filter(Boolean);
+// Add sort and filter state
+let currentSort = "Date"; // "A-Z", "Z-A", "Date"
+let currentFilter = "All"; // "All", "Acctive", "Completed"
+
+// Sorting function
+function sortData(lists, sortType) {
+  const sorted = [...lists];
+  if (sortType === "A-Z") {
+    sorted.sort((a, b) => a.l_title.localeCompare(b.l_title));
+  } else if (sortType === "Z-A") {
+    sorted.sort((a, b) => b.l_title.localeCompare(a.l_title));
+  } else if (sortType === "Date") {
+    sorted.sort((a, b) => {
+      if (!a.date) return 1;
+      if (!b.date) return -1;
+      return new Date(a.date) - new Date(b.date);
+    });
+  }
+  return sorted;
+}
+
+// Update filterData to support filter type
+function filterData(query, filterType = currentFilter) {
+  let lists = currentData.lists;
+  if (query && query.trim()) {
+    const q = query.trim().toLowerCase();
+    lists = lists
+      .map((list) => {
+        const matchList = list.l_title.toLowerCase().includes(q);
+        const matchedTasks = list.tasks.filter((task) =>
+          task.t_name.toLowerCase().includes(q)
+        );
+        if (matchList || matchedTasks.length) {
+          return {
+            ...list,
+            tasks: matchList ? list.tasks : matchedTasks,
+          };
+        }
+        return null;
+      })
+      .filter(Boolean);
+  }
+  // Filter by status
+  if (filterType === "Acctive") {
+    lists = lists
+      .map((list) => ({
+        ...list,
+        tasks: list.tasks.filter((task) => !task.status),
+      }))
+      .filter((list) => list.tasks.length > 0);
+  } else if (filterType === "Completed") {
+    lists = lists
+      .map((list) => ({
+        ...list,
+        tasks: list.tasks.filter((task) => task.status),
+      }))
+      .filter((list) => list.tasks.length > 0);
+  }
+  return lists;
+}
+
+// Update displayData to use sort and filter
+function displayFilteredAndSorted(query = "") {
+  let filtered = filterData(query, currentFilter);
+  let sorted = sortData(filtered, currentSort);
+  displayData(sorted);
 }
 
 // Event delegation for all events in main__body
@@ -370,17 +415,35 @@ document.querySelector(".addList button").addEventListener("click", () => {
   displayData(currentData.lists);
 });
 
-// Add searchbar event listener
+// Add sort and filter event listeners
+document.querySelectorAll(".overlay-sort > li").forEach((li) => {
+  li.addEventListener("click", (e) => {
+    currentSort =
+      e.target.textContent === "A - Z"
+        ? "A-Z"
+        : e.target.textContent === "Z - A"
+        ? "Z-A"
+        : "Date";
+    displayFilteredAndSorted(searchInput.value);
+  });
+});
+
+document.querySelectorAll(".overlay-filter > li").forEach((li) => {
+  li.addEventListener("click", (e) => {
+    currentFilter = e.target.textContent;
+    displayFilteredAndSorted(searchInput.value);
+  });
+});
+
+// Update searchbar event listener
 const searchInput = document.querySelector(".search input[type='search']");
 searchInput.addEventListener("input", (e) => {
-  const query = e.target.value;
-  const filtered = filterData(query);
-  displayData(filtered);
+  displayFilteredAndSorted(e.target.value);
 });
 
 document.addEventListener("DOMContentLoaded", () => {
   syncData();
-  displayData(currentData.lists);
+  displayFilteredAndSorted();
   setUserName(currentData);
   setCurrentDate();
   setCurrentWeather();
