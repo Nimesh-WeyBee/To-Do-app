@@ -82,15 +82,24 @@ mainBodyEle.addEventListener("click", (e) => {
     return;
   }
 
+  // Task remove (delete task)
+  const removeDiv = e.target.closest(".card__remove");
+  if (removeDiv) {
+    const itemDiv = removeDiv.parentElement;
+    const t_id = Number(itemDiv.className.match(/card__item-(\d+)/)[1]);
+    deleteTask(l_id, t_id);
+    displayData(currentData.lists);
+    return;
+  }
+
   // Task status (toggle complete)
   const statusDiv =
     e.target.closest(".card__status") ||
     e.target.closest(".card__item-title") ||
     e.target.closest(".card__item");
 
-  if (statusDiv.className.match(/card__item-(\d+)/)) {
+  if (statusDiv?.className?.match(/card__item-(\d+)/)) {
     const t_id = Number(statusDiv.className.match(/card__item-(\d+)/)[1]);
-    console.log(t_id);
     const list = currentData.lists.find((l) => l.l_id === l_id);
     const task = list.tasks.find((t) => t.t_id === t_id);
     editTaskStatus(l_id, t_id, !task.status);
@@ -102,16 +111,6 @@ mainBodyEle.addEventListener("click", (e) => {
     const list = currentData.lists.find((l) => l.l_id === l_id);
     const task = list.tasks.find((t) => t.t_id === t_id);
     editTaskStatus(l_id, t_id, !task.status);
-    displayData(currentData.lists);
-    return;
-  }
-
-  // Task remove (delete task)
-  const removeDiv = e.target.closest(".card__remove");
-  if (removeDiv) {
-    const itemDiv = removeDiv.parentElement;
-    const t_id = Number(itemDiv.className.match(/card__item-(\d+)/)[1]);
-    deleteTask(l_id, t_id);
     displayData(currentData.lists);
     return;
   }
