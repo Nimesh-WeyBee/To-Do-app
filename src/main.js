@@ -16,7 +16,7 @@ import {
 const mainBodyEle = document.querySelector(".main__body");
 
 function calcDate(dateStr) {
-  if (!dateStr) return "";
+  if (!dateStr) return "Select date";
   const inputDate = new Date(dateStr);
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -31,7 +31,8 @@ function calcDate(dateStr) {
   });
 
   if (inputDate.getTime() === today.getTime()) return "Today";
-  if (inputDate.getTime() === tomorrow.getTime()) return `Tomorrow, ${monthDay}`;
+  if (inputDate.getTime() === tomorrow.getTime())
+    return `Tomorrow, ${monthDay}`;
   return monthDay;
 }
 
@@ -151,6 +152,81 @@ mainBodyEle.addEventListener("click", (e) => {
   const card = e.target.closest(".main__body-card");
   if (!card) return;
   const l_id = Number(card.id);
+
+  // Date picker for list date
+  if (e.target.closest(".card__header-dateContainer")) {
+    const dateDiv = card.querySelector(".card__header-date");
+    if (!dateDiv) return;
+    const list = currentData.lists.find((l) => l.l_id === l_id);
+    const currentDate = list?.date || "";
+
+    // Remove any existing date picker
+    document
+      .querySelectorAll(".popup-date-picker")
+      .forEach((el) => el.remove());
+
+    // Create date input as popup
+    const input = document.createElement("input");
+    input.type = "date";
+    input.className = "inline-edit-list-date popup-date-picker";
+    input.value = currentDate;
+
+    // Position the input absolutely near the dateDiv
+    const rect = dateDiv.getBoundingClientRect();
+    input.style.position = "absolute";
+    input.style.left = rect.left + "px";
+    input.style.top = rect.bottom + window.scrollY + "px";
+    input.style.zIndex = 1000;
+    input.style.background = "hsla(0, 0%, 100%, 0.69)";
+    input.style.boxShadow = "0 2px 8px rgba(0,0,0,0.15)";
+    input.style.padding = "0.2em 0.5em";
+    input.style.backdropFilter = "blur(5px)";
+    input.style.borderRadius = "0.2em";
+    input.style.border = "none";
+
+    document.body.appendChild(input);
+    input.focus();
+
+    let removed = false; // flag to prevent double remove
+
+    function removeInputSafely() {
+      if (!removed) {
+        try {
+          if (input.parentNode) input.parentNode.removeChild(input);
+        } catch (e) {
+          // Ignore NotFoundError
+        }
+        removed = true;
+      }
+    }
+
+    function finishEdit() {
+      if (input.value && input.value !== currentDate) {
+        editListDate(l_id, input.value);
+      }
+      removeInputSafely();
+      document.removeEventListener("mousedown", handler);
+      displayData(currentData.lists);
+    }
+    input.addEventListener("blur", finishEdit);
+    input.addEventListener("change", finishEdit);
+    input.addEventListener("keydown", (ev) => {
+      if (ev.key === "Enter") {
+        input.blur();
+      }
+    });
+
+    // Remove picker if clicking elsewhere
+    function handler(ev) {
+      if (ev.target !== input) {
+        removeInputSafely();
+        document.removeEventListener("mousedown", handler);
+      }
+    }
+    document.addEventListener("mousedown", handler);
+
+    return;
+  }
 
   // Trash icon (delete list)
   if (e.target.closest(".card__header-trash")) {

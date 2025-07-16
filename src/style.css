@@ -331,7 +331,8 @@ main {
 }
 
 .inline-edit-list-title,
-.inline-edit-task-title {
+.inline-edit-task-title,
+.inline-edit-list-date {
   outline: none;
   border: none;
   font-family: inherit;
@@ -417,4 +418,14 @@ footer {
 }
 .fs-body {
   font-size: 0.875rem;
+}
+
+.popup-date-picker {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 0.2em;
+  border: 1px solid #ccc;
+  background: #fff;
+  padding: 0.2em 0.5em;
+  font-size: 1rem;
+  z-index: 1000;
 }
