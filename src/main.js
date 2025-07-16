@@ -1,3 +1,4 @@
+import { syncData } from "./localstorage.js";
 import {
   insertList,
   insertTask,
@@ -62,10 +63,6 @@ function displayData(data) {
   });
 }
 
-displayData(currentData.lists);
-
-console.log(currentData);
-
 // Event delegation for all events in main__body
 mainBodyEle.addEventListener("click", (e) => {
   e.preventDefault();
@@ -128,4 +125,9 @@ mainBodyEle.addEventListener("submit", (e) => {
     displayData(currentData.lists);
     input.value = "";
   }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  syncData();
+  displayData(currentData.lists);
 });

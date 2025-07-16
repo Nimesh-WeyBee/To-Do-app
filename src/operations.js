@@ -15,7 +15,7 @@ function insertList(l_title, date) {
     date: date,
     tasks: [],
   });
-  saveData();
+  saveData(currentData);
 }
 
 function insertTask(l_id, t_name) {
@@ -29,7 +29,7 @@ function insertTask(l_id, t_name) {
       t_name,
       status: false,
     });
-    saveData();
+    saveData(currentData);
   }
 }
 
@@ -38,7 +38,7 @@ function editListName(l_id, l_name) {
   const list = currentData.lists.find((l) => l.l_id === l_id);
   if (list) {
     list.l_title = l_name;
-    saveData();
+    saveData(currentData);
   }
 }
 
@@ -46,7 +46,7 @@ function editListDate(l_id, date) {
   const list = currentData.lists.find((l) => l.l_id === l_id);
   if (list) {
     list.date = date;
-    saveData();
+    saveData(currentData);
   }
 }
 
@@ -56,7 +56,7 @@ function editTaskName(l_id, t_id, t_name) {
     const task = list.tasks.find((t) => t.t_id === t_id);
     if (task) {
       task.t_name = t_name;
-      saveData();
+      saveData(currentData);
     }
   }
 }
@@ -67,7 +67,7 @@ function editTaskStatus(l_id, t_id, status) {
     const task = list.tasks.find((t) => t.t_id === t_id);
     if (task) {
       task.status = status;
-      saveData();
+      saveData(currentData);
     }
   }
 }
@@ -77,7 +77,7 @@ function deleteList(l_id) {
   const idx = currentData.lists.findIndex((l) => l.l_id === l_id);
   if (idx !== -1) {
     currentData.lists.splice(idx, 1);
-    saveData();
+    saveData(currentData);
   }
 }
 
@@ -87,7 +87,7 @@ function deleteTask(l_id, t_id) {
     const idx = list.tasks.findIndex((t) => t.t_id === t_id);
     if (idx !== -1) {
       list.tasks.splice(idx, 1);
-      saveData();
+      saveData(currentData);
     }
   }
 }
