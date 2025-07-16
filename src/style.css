@@ -221,6 +221,7 @@ main {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  position: relative;
 }
 .transform > div > button {
   padding: 0.2rem 0.8rem;
@@ -234,24 +235,70 @@ main {
   background-color: var(--clr-btn-100);
   cursor: pointer;
 }
-/* Transform sort */
-.transform-sort {
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
+
+.overlay-sort,
+.overlay-filter {
+  position: absolute;
+  top: 26px;
+  left: 0;
+  z-index: 1000;
+  background-color: #fff;
+  margin: 0;
+  padding: 0.4rem;
+  border-radius: 0.2rem;
+  list-style: none;
+  width: max-content;
+
+  transition: all 0.2s;
+
+  opacity: 0;
+  user-select: none;
+  visibility: hidden;
 }
-/* Transform filter */
-.transform-filter {
+.overlay-sort > *,
+.overlay-filter > * {
+  padding: 0.4rem;
+  border-radius: 0.2rem;
+  color: var(--clr-btn-200);
+  font-weight: var(--fw-label);
   display: flex;
   align-items: center;
-  gap: 0.2rem;
+  gap: 0.5rem;
+}
+.overlay-sort > *:hover,
+.overlay-filter > *:hover {
+  cursor: pointer;
+  background-color: var(--clr-hover-100);
+}
+.overlay-sort::after,
+.overlay-filter::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0%;
+  transform: translate(0%, -50%) rotate(45deg);
+  width: 10px;
+  height: 10px;
+  background-color: #fff;
+}
+.overlay-filter::after,
+.overlay-filter {
+  right: 0;
+  left: auto;
 }
 
-/* Lis container  */
+.transform-sort:hover .overlay-sort,
+.transform-filter:hover .overlay-filter { 
+  opacity: 1;
+  visibility: visible;
+}
+
+/* List container  */
 .main__body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 1.5rem;
+  transition: all 0.2s;
 }
 
 /* All list style */
