@@ -43,7 +43,7 @@ function displayData(data) {
           ${ele.tasks
             .map(
               (task) => `
-              <div class="card__item-${task.t_id} ${
+              <div class="card__item card__item-${task.t_id} ${
                 task.status ? "completed" : ""
               }">
               <div class="card__status"></div>
@@ -70,7 +70,6 @@ console.log(currentData);
 mainBodyEle.addEventListener("click", (e) => {
   e.preventDefault();
 
-  console.log(e.target);
   // Find the closest card
   const card = e.target.closest(".main__body-card");
   if (!card) return;
@@ -85,10 +84,19 @@ mainBodyEle.addEventListener("click", (e) => {
 
   // Task status (toggle complete)
   const statusDiv =
-    e.target.closest(".card__status") || e.target.closest(".card__item-title") ;
+    e.target.closest(".card__status") ||
+    e.target.closest(".card__item-title") ||
+    e.target.closest(".card__item");
 
-  console.log(statusDiv);
-  if (statusDiv) {
+  if (statusDiv.className.match(/card__item-(\d+)/)) {
+    const t_id = Number(statusDiv.className.match(/card__item-(\d+)/)[1]);
+    console.log(t_id);
+    const list = currentData.lists.find((l) => l.l_id === l_id);
+    const task = list.tasks.find((t) => t.t_id === t_id);
+    editTaskStatus(l_id, t_id, !task.status);
+    displayData(currentData.lists);
+    return;
+  } else if (statusDiv) {
     const itemDiv = statusDiv.parentElement;
     const t_id = Number(itemDiv.className.match(/card__item-(\d+)/)[1]);
     const list = currentData.lists.find((l) => l.l_id === l_id);
