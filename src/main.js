@@ -236,6 +236,12 @@ mainBodyEle.addEventListener("submit", (e) => {
   }
 });
 
+// Add event listener for Add List button
+document.querySelector(".addList button").addEventListener("click", () => {
+  insertList("Add Title", "");
+  displayData(currentData.lists);
+});
+
 document.addEventListener("DOMContentLoaded", () => {
   syncData();
   displayData(currentData.lists);
