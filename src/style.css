@@ -200,6 +200,9 @@ main {
 .main__body-card-color-3 {
   background-color: var(--clr-accent-400);
 }
+.main__body-card-color-4 {
+  background-color: var(--clr-accent-500);
+}
 
 /* Card header */
 .card__header {
