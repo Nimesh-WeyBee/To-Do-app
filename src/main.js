@@ -67,6 +67,60 @@ function displayData(data) {
   });
 }
 
+// Set current date in header
+function setCurrentDate() {
+  const dateEle = document.getElementById("currentDate");
+  const today = new Date();
+  const options = { weekday: "short", month: "short", day: "numeric" };
+  dateEle.textContent = today.toLocaleDateString(undefined, options);
+}
+
+// Fetch and set current weather using wttr.in (no API key needed)
+function setCurrentWeather() {
+  const tempEle = document.getElementById("temprature");
+  const iconEle = document.getElementById("wetherIcon");
+
+  function updateWeather(query) {
+    fetch(`https://wttr.in/${query}?format=j1`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.current_condition && data.current_condition[0]) {
+          const tempC = data.current_condition[0].temp_C;
+          tempEle.textContent = `${tempC}°C`;
+          // Use weatherDesc for icon selection (simple mapping)
+          const desc =
+            data.current_condition[0].weatherDesc[0].value.toLowerCase();
+          let iconSrc = "images/sun.svg";
+          if (desc.includes("cloud")) iconSrc = "images/cloud.svg";
+          else if (desc.includes("rain")) iconSrc = "images/rain.svg";
+          else if (desc.includes("snow")) iconSrc = "images/snow.svg";
+          iconEle.innerHTML = `<img src="${iconSrc}" alt="weather icon" />`;
+        } else {
+          tempEle.textContent = "N/A";
+        }
+      })
+      .catch(() => {
+        tempEle.textContent = "N/A";
+      });
+  }
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+        updateWeather(`${lat},${lon}`);
+      },
+      () => {
+        // fallback to city name or IP-based location
+        updateWeather(""); // wttr.in will use IP location
+      }
+    );
+  } else {
+    updateWeather(""); // fallback
+  }
+}
+
 // Event delegation for all events in main__body
 mainBodyEle.addEventListener("click", (e) => {
   e.preventDefault();
@@ -185,4 +239,6 @@ mainBodyEle.addEventListener("submit", (e) => {
 document.addEventListener("DOMContentLoaded", () => {
   syncData();
   displayData(currentData.lists);
+  setCurrentDate();
+  setCurrentWeather();
 });
