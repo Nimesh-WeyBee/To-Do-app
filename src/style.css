@@ -258,10 +258,10 @@ main {
   color: var(--clr-btn-100);
   cursor: pointer;
 }
-.card__header-dateIcon:hover ,.card__header-date:hover{
+.card__header-dateIcon:hover,
+.card__header-date:hover {
   color: var(--clr-btn-200);
 }
-
 
 /* Card body */
 
@@ -317,7 +317,7 @@ main {
 }
 
 /* card footer */
-.card__footer{
+.card__footer {
   width: 100%;
 }
 
@@ -325,12 +325,19 @@ main {
   width: 100%;
   padding: 0.4rem;
   border-radius: 0.2rem;
-  
+
   outline: none;
   border: none;
-
 }
 
+.inline-edit-list-title,
+.inline-edit-task-title {
+  outline: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0;
+}
 
 /* Footer */
 

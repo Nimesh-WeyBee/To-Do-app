@@ -27,7 +27,9 @@ function displayData(data) {
         }" id = ${ele.l_id}>
           <div class="card__header fs-secondary-heading fw-sub-heading">
             <div class="card__header-titleContainer">
-              <div class="card__header-title">${ele.l_title}</div>
+              <div class="card__header-title" data-edit="list" data-lid="${
+                ele.l_id
+              }">${ele.l_title}</div>
               <div class="card__header-trash">
                 <img src="images/trash.svg" alt="trash btn" />
               </div>
@@ -48,7 +50,9 @@ function displayData(data) {
                 task.status ? "completed" : ""
               }">
               <div class="card__status"></div>
-              <div class="card__item-title">${task.t_name}</div>
+              <div class="card__item-title" data-edit="task" data-lid="${
+                ele.l_id
+              }" data-tid="${task.t_id}">${task.t_name}</div>
               <div class="card__remove"></div>
             </div>`
             )
@@ -86,6 +90,57 @@ mainBodyEle.addEventListener("click", (e) => {
     const t_id = Number(itemDiv.className.match(/card__item-(\d+)/)[1]);
     deleteTask(l_id, t_id);
     displayData(currentData.lists);
+    return;
+  }
+
+  // Inplace edit for list title
+  if (e.target.classList.contains("card__header-title")) {
+    const l_id = Number(e.target.dataset.lid);
+    const oldTitle = e.target.textContent;
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = oldTitle;
+    input.className = "inline-edit-list-title";
+    e.target.replaceWith(input);
+    input.focus();
+
+    input.addEventListener("blur", () => {
+      if (input.value.trim() && input.value !== oldTitle) {
+        editListName(l_id, input.value.trim());
+      }
+      displayData(currentData.lists);
+    });
+    input.addEventListener("keydown", (ev) => {
+      if (ev.key === "Enter") {
+        input.blur();
+      }
+    });
+    return;
+  }
+
+  // Inplace edit for task name
+  if (e.target.classList.contains("card__item-title")) {
+    const l_id = Number(e.target.dataset.lid);
+    const t_id = Number(e.target.dataset.tid);
+    const oldName = e.target.textContent;
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = oldName;
+    input.className = "inline-edit-task-title";
+    e.target.replaceWith(input);
+    input.focus();
+
+    input.addEventListener("blur", () => {
+      if (input.value.trim() && input.value !== oldName) {
+        editTaskName(l_id, t_id, input.value.trim());
+      }
+      displayData(currentData.lists);
+    });
+    input.addEventListener("keydown", (ev) => {
+      if (ev.key === "Enter") {
+        input.blur();
+      }
+    });
     return;
   }
 
