@@ -92,7 +92,9 @@ function displayData(data) {
 
 // Set user name from data
 function setUserName(data) {
-  document.querySelector(".labelWelcome").textContent = `Hello, ${data.u_name}!`;
+  document.querySelector(
+    ".labelWelcome"
+  ).textContent = `Hello, ${data.u_name}!`;
 }
 
 // Set current date in header
@@ -147,6 +149,29 @@ function setCurrentWeather() {
   } else {
     updateWeather(""); // fallback
   }
+}
+
+// Filter data based on search query
+function filterData(query) {
+  if (!query.trim()) return currentData.lists;
+  const q = query.trim().toLowerCase();
+  return currentData.lists
+    .map((list) => {
+      // Match list title
+      const matchList = list.l_title.toLowerCase().includes(q);
+      // Match tasks
+      const matchedTasks = list.tasks.filter((task) =>
+        task.t_name.toLowerCase().includes(q)
+      );
+      if (matchList || matchedTasks.length) {
+        return {
+          ...list,
+          tasks: matchList ? list.tasks : matchedTasks,
+        };
+      }
+      return null;
+    })
+    .filter(Boolean);
 }
 
 // Event delegation for all events in main__body
@@ -343,6 +368,14 @@ mainBodyEle.addEventListener("submit", (e) => {
 document.querySelector(".addList button").addEventListener("click", () => {
   insertList("Add Title", "");
   displayData(currentData.lists);
+});
+
+// Add searchbar event listener
+const searchInput = document.querySelector(".search input[type='search']");
+searchInput.addEventListener("input", (e) => {
+  const query = e.target.value;
+  const filtered = filterData(query);
+  displayData(filtered);
 });
 
 document.addEventListener("DOMContentLoaded", () => {
