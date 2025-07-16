@@ -174,7 +174,7 @@ main {
   gap: 0.5rem;
 }
 
-.addList{
+.addList {
   flex-grow: 1;
   max-width: 300px;
 }
@@ -187,7 +187,6 @@ main {
   background-color: var(--clr-btn-200);
   color: var(--clr-primary-100);
   font-weight: var(--fw-label);
-  
 }
 .addList > button:hover {
   background-color: var(--clr-btn-100);
@@ -203,18 +202,17 @@ main {
   width: 90%;
   padding: 0.4rem;
   border-radius: 0.2rem;
-  /* border: none; */
-  /* background-color: var(--clr-primary-100); */
+  border: none;
+  background-color: #f7f7f7;
   color: var(--clr-btn-200);
 }
 .search input:focus {
   outline: none;
-  border: 1px solid var(--clr-btn-200);
-  background-color: var(--clr-primary-100);
 }
 
 /* Transform */
 .transform {
+  height: 100%;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -249,8 +247,6 @@ main {
   gap: 0.2rem;
 }
 
-
-
 /* Lis container  */
 .main__body {
   display: grid;
@@ -263,6 +259,7 @@ main {
   background-color: var(--clr-accent-100);
   border-radius: 0.5rem;
   padding: 1rem;
+  max-height: fit-content;
 }
 /* Individual list color */
 .main__body-card-color-0 {
