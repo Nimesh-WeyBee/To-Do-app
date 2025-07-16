@@ -15,12 +15,34 @@ import {
 
 const mainBodyEle = document.querySelector(".main__body");
 
+function calcDate(dateStr) {
+  if (!dateStr) return "";
+  const inputDate = new Date(dateStr);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+
+  inputDate.setHours(0, 0, 0, 0);
+
+  const monthDay = inputDate.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+  });
+
+  if (inputDate.getTime() === today.getTime()) return "Today";
+  if (inputDate.getTime() === tomorrow.getTime()) return `Tomorrow, ${monthDay}`;
+  return monthDay;
+}
+
 function displayData(data) {
   mainBodyEle.innerHTML = "";
   let html = ``;
 
   const colorList = [0, 1, 2, 3, 4];
   data.forEach((ele, i) => {
+    const dateLabel = calcDate(ele.date);
+
     html = `
         <div class="main__body-card main__body-card-color-${
           colorList[i % colorList.length]
@@ -39,7 +61,7 @@ function displayData(data) {
               <div class="card__header-dateIcon">
                 <img src="images/calender.svg" alt="" />
               </div>
-              <div class="card__header-date">Today</div>
+              <div class="card__header-date">${dateLabel}</div>
             </div>
           </div>
           <div class="card__body">
