@@ -129,7 +129,7 @@ header {
 /* Body */
 main {
   padding: 2rem;
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
 
   background-color: var(--clr-primary-100);
@@ -292,6 +292,9 @@ main {
 
 .completed .card__status {
   background-image: url("../images/checkbox_checked.svg");
+}
+.completed .card__item-title {
+  text-decoration: line-through;
 }
 
 .card__body > div:hover .card__remove {
