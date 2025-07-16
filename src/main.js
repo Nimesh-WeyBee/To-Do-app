@@ -90,6 +90,11 @@ function displayData(data) {
   });
 }
 
+// Set user name from data
+function setUserName(data) {
+  document.querySelector(".labelWelcome").textContent = `Hello, ${data.u_name}!`;
+}
+
 // Set current date in header
 function setCurrentDate() {
   const dateEle = document.getElementById("currentDate");
@@ -343,6 +348,7 @@ document.querySelector(".addList button").addEventListener("click", () => {
 document.addEventListener("DOMContentLoaded", () => {
   syncData();
   displayData(currentData.lists);
+  setUserName(currentData);
   setCurrentDate();
   setCurrentWeather();
 });

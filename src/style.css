@@ -154,7 +154,7 @@ main {
 .main__header-info > div {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1.8rem;
 }
 .labelWether {
   display: flex;
