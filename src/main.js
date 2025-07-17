@@ -245,6 +245,14 @@ function displayFilteredAndSorted(query = "") {
   displayData(sorted);
 }
 
+function findSelection(selectedTasks) {
+  for (const c of Object.values(selectedTasks)) {
+    if (c.size > 0) return true;
+  }
+  selectedTasks = {};
+  return false;
+}
+
 // Event delegation for all events in main__body
 mainBodyEle.addEventListener("click", (e) => {
   e.preventDefault();
@@ -282,9 +290,8 @@ mainBodyEle.addEventListener("click", (e) => {
       selectedTasks[l_id] = new Set();
       displayFilteredAndSorted(searchInput.value);
     }
-    // Optionally, exit selection mode after delete
-    selection = false;
-    selectedTasks = {};
+    selection = findSelection(selectedTasks);
+
     displayFilteredAndSorted(searchInput.value);
     return;
   }
