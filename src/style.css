@@ -137,8 +137,10 @@ main {
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 1.5rem;
+  /* min-height: 84dvh; */
+  width: fill-available;
 }
 
 .main__header {
@@ -579,6 +581,7 @@ footer {
   background-color: var(--clr-accent-500);
   padding: 1.5rem;
   text-align: center;
+  margin-bottom: 0;
 }
 
 /* Utility classes */
