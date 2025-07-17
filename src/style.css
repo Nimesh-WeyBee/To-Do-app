@@ -158,11 +158,20 @@ main {
   max-width: 50dvw;
   cursor: default;
 }
+
 #u_name:hover {
   cursor: pointer;
   color: var(--clr-btn-100);
 }
-
+.labelWelcome{
+  overflow: auto;
+  /* Hiding the scrollbar  */
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  &::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+  }
+}
 .labelWether {
   display: flex;
   gap: 0.2rem;
@@ -170,7 +179,11 @@ main {
 }
 
 .main__header-action {
-  display: flex;
+  display: grid;
+  grid-template-columns: .5fr 1fr auto;
+  grid-template-areas:
+    "addList search transform";
+
   align-items: center;
   justify-content: space-between;
 }
@@ -182,8 +195,10 @@ main {
 }
 
 .addList {
-  flex-grow: 1;
+  /* flex-grow: 1; */
+  grid-area: addList;
   max-width: 300px;
+
 }
 .addList > button {
   width: 100%;
@@ -202,7 +217,8 @@ main {
 
 /* Search */
 .search {
-  flex-grow: 1;
+  /* flex-grow: 1; */
+  grid-area: search;
   text-align: center;
 }
 .search input {
@@ -227,6 +243,7 @@ main {
 
 /* Transform */
 .transform {
+  grid-area: transform;
   height: 100%;
   display: flex;
   align-items: center;
@@ -307,6 +324,33 @@ main {
   opacity: 1;
   visibility: visible;
 }
+
+@media (max-width: 600px) {
+  .main__header-info{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .main__header-info > div {
+    max-width: 100%;
+  }
+
+  .main__header-action{
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "addList addList"
+      "search transform";
+      gap: 0.5rem;
+  }
+  .addList {
+    max-width: 100%;
+  }
+  .search input{
+    width: 100%;
+  }
+}
+
 
 /* List container  */
 .main__body {
@@ -479,8 +523,8 @@ main {
   padding: 0;
 }
 .inline-edit-user-name {
-  width: 50%;
-  max-width: 200px;
+  width: 26dvw;
+  /* max-width: 200px; */
   background-color: transparent;
   color: var(--clr-btn-200);
   transition: border-color 0.2s;
@@ -564,6 +608,21 @@ footer {
 }
 .fs-body {
   font-size: 0.875rem;
+}
+
+@media screen and (max-width: 800px) {
+  main{
+    padding: 1rem;
+  }  
+}
+
+@media screen and (max-width: 600px) {
+  .fs-primary-heading {
+    font-size: calc(var(--fs-primary-heading) * 0.7rem);
+  }
+  .fs-footer {
+    font-size: calc(var(--fs-footer) * 0.9rem);
+  }
 }
 
 .popup-date-picker {
