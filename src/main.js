@@ -260,7 +260,7 @@ mainBodyEle.addEventListener("click", (e) => {
     const list = currentData.lists.find((l) => l.l_id === l_id);
     if (list) {
       selectedTasks[l_id] = new Set(list.tasks.map((t) => t.t_id));
-      displayData(currentData.lists);
+      displayFilteredAndSorted(searchInput.value);
     }
     return;
   }
@@ -269,7 +269,7 @@ mainBodyEle.addEventListener("click", (e) => {
     // Clear selection mode and hide selection buttons
     selection = false;
     selectedTasks = {};
-    displayData(currentData.lists);
+    displayFilteredAndSorted(searchInput.value);
     return;
   }
 
@@ -280,12 +280,12 @@ mainBodyEle.addEventListener("click", (e) => {
         deleteTask(l_id, t_id);
       });
       selectedTasks[l_id] = new Set();
-      displayData(currentData.lists);
+      displayFilteredAndSorted(searchInput.value);
     }
     // Optionally, exit selection mode after delete
     selection = false;
     selectedTasks = {};
-    displayData(currentData.lists);
+    displayFilteredAndSorted(searchInput.value);
     return;
   }
 
@@ -301,7 +301,7 @@ mainBodyEle.addEventListener("click", (e) => {
       } else {
         selectedTasks[l_id].add(t_id);
       }
-      displayData(currentData.lists);
+      displayFilteredAndSorted(searchInput.value);
     }
     return;
   }
@@ -359,7 +359,7 @@ mainBodyEle.addEventListener("click", (e) => {
       }
       removeInputSafely();
       document.removeEventListener("mousedown", handler);
-      displayData(currentData.lists);
+      displayFilteredAndSorted(searchInput.value);
     }
     input.addEventListener("blur", finishEdit);
     input.addEventListener("change", finishEdit);
@@ -384,7 +384,7 @@ mainBodyEle.addEventListener("click", (e) => {
   // Trash icon (delete list)
   if (e.target.closest(".card__header-trash")) {
     deleteList(l_id);
-    displayData(currentData.lists);
+    displayFilteredAndSorted(searchInput.value);
     return;
   }
 
@@ -394,7 +394,7 @@ mainBodyEle.addEventListener("click", (e) => {
     const itemDiv = removeDiv.parentElement;
     const t_id = Number(itemDiv.className.match(/card__item-(\d+)/)[1]);
     deleteTask(l_id, t_id);
-    displayData(currentData.lists);
+    displayFilteredAndSorted(searchInput.value);
     return;
   }
 
@@ -413,7 +413,7 @@ mainBodyEle.addEventListener("click", (e) => {
       if (input.value.trim() && input.value !== oldTitle) {
         editListName(l_id, input.value.trim());
       }
-      displayData(currentData.lists);
+      displayFilteredAndSorted(searchInput.value);
     });
     input.addEventListener("keydown", (ev) => {
       if (ev.key === "Enter") {
@@ -439,7 +439,7 @@ mainBodyEle.addEventListener("click", (e) => {
       if (input.value.trim() && input.value !== oldName) {
         editTaskName(l_id, t_id, input.value.trim());
       }
-      displayData(currentData.lists);
+      displayFilteredAndSorted(searchInput.value);
     });
     input.addEventListener("keydown", (ev) => {
       if (ev.key === "Enter") {
@@ -460,7 +460,7 @@ mainBodyEle.addEventListener("click", (e) => {
     const list = currentData.lists.find((l) => l.l_id === l_id);
     const task = list.tasks.find((t) => t.t_id === t_id);
     editTaskStatus(l_id, t_id, !task.status);
-    displayData(currentData.lists);
+    displayFilteredAndSorted(searchInput.value);
     return;
   } else if (statusDiv) {
     const itemDiv = statusDiv.parentElement;
@@ -468,7 +468,7 @@ mainBodyEle.addEventListener("click", (e) => {
     const list = currentData.lists.find((l) => l.l_id === l_id);
     const task = list.tasks.find((t) => t.t_id === t_id);
     editTaskStatus(l_id, t_id, !task.status);
-    displayData(currentData.lists);
+    displayFilteredAndSorted(searchInput.value);
     return;
   }
 });
@@ -482,7 +482,7 @@ mainBodyEle.addEventListener("submit", (e) => {
   const input = e.target.querySelector("input[type='text']");
   if (input && input.value.trim()) {
     insertTask(l_id, input.value.trim());
-    displayData(currentData.lists);
+    displayFilteredAndSorted(searchInput.value);
     input.value = "";
   }
 });
@@ -501,7 +501,7 @@ function selectionHandler(e) {
     const t_id = Number(itemDiv.className.match(/card__item-(\d+)/)[1]);
     selectedTasks[l_id].add(t_id);
   }
-  displayData(currentData.lists);
+  displayFilteredAndSorted(searchInput.value);
 }
 
 const longPressThreshold = 500;
@@ -535,7 +535,7 @@ mainBodyEle.addEventListener("touchcancel", () => {
 // Add event listener for Add List button
 document.querySelector(".addList button").addEventListener("click", () => {
   insertList("Add Title", "");
-  displayData(currentData.lists);
+  displayFilteredAndSorted(searchInput.value);
 });
 
 // Add sort and filter event listeners
@@ -574,6 +574,7 @@ function initEditUserName() {
         editUserName(input.value.trim());
       }
       displayUserName(currentData.u_name);
+      // No need to call displayFilteredAndSorted for username
     });
     input.addEventListener("keydown", (ev) => {
       if (ev.key === "Enter") {
