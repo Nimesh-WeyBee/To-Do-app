@@ -17,6 +17,8 @@ import {
 const mainBodyEle = document.querySelector(".main__body");
 
 let selection = false;
+// Track selected tasks per list: { [l_id]: Set of t_id }
+let selectedTasks = {};
 
 function calcDate(dateStr) {
   if (!dateStr) return "Select date";
@@ -89,6 +91,10 @@ function displayData(data) {
               (task) => `
               <div class="card__item card__item-${task.t_id} ${
                 task.status ? "completed" : ""
+              } ${
+                selection && selectedTasks[ele.l_id]?.has(task.t_id)
+                  ? "selected"
+                  : ""
               }">
               <div class="card__status"></div>
               <div class="card__item-title" data-edit="task" data-lid="${
@@ -250,19 +256,54 @@ mainBodyEle.addEventListener("click", (e) => {
 
   // handling selection
   if (e.target.closest(".card__header-selectAll")) {
-    console.log("Handel select all");
+    // Select all tasks in this list
+    const list = currentData.lists.find((l) => l.l_id === l_id);
+    if (list) {
+      selectedTasks[l_id] = new Set(list.tasks.map((t) => t.t_id));
+      displayData(currentData.lists);
+    }
+    return;
   }
 
   if (e.target.closest(".card__header-selecNone")) {
-    console.log("select none");
+    // Deselect all tasks in this list
+    selectedTasks[l_id] = new Set();
+    displayData(currentData.lists);
+    return;
   }
 
   if (e.target.closest(".card__header-deleteSelection")) {
-    console.log("delete selection");
+    // Delete all selected tasks in this list
+    if (selectedTasks[l_id] && selectedTasks[l_id].size > 0) {
+      selectedTasks[l_id].forEach((t_id) => {
+        deleteTask(l_id, t_id);
+      });
+      selectedTasks[l_id] = new Set();
+      displayData(currentData.lists);
+    }
+    // Optionally, exit selection mode after delete
+    selection = false;
+    selectedTasks = {};
+    displayData(currentData.lists);
+    return;
   }
 
   // returning when we are selecting
-  if (selection) return;
+  if (selection) {
+    // Toggle selection for clicked task
+    const itemDiv = e.target.closest(".card__item");
+    if (itemDiv) {
+      const t_id = Number(itemDiv.className.match(/card__item-(\d+)/)[1]);
+      if (!selectedTasks[l_id]) selectedTasks[l_id] = new Set();
+      if (selectedTasks[l_id].has(t_id)) {
+        selectedTasks[l_id].delete(t_id);
+      } else {
+        selectedTasks[l_id].add(t_id);
+      }
+      displayData(currentData.lists);
+    }
+    return;
+  }
 
   if (e.target.closest(".card__header-dateContainer")) {
     // Date picker for list date
@@ -448,30 +489,18 @@ mainBodyEle.addEventListener("submit", (e) => {
 function selectionHandler(e) {
   const card = e.target.closest(".main__body-card");
   if (!card) return;
-
-  console.log(e.target);
+  const l_id = Number(card.id);
 
   selection = true;
+  if (!selectedTasks[l_id]) selectedTasks[l_id] = new Set();
 
-  card
-    .querySelector(".card__header-selectorContainer")
-    .classList.remove("hide");
-
-  const closestBody = e.target.closest(".card__body");
-  if (closestBody) {
-    const title = e.target.querySelector(".card__item-title");
-    console.log(title);
-    const l_id = Number(title.dataset.lid);
-    const t_id = Number(title.dataset.tid);
-
-    console.log(closestBody, t_id);
-
-    const cardDiv = closestBody.querySelector(`card__item-${t_id}`);
-    console.log(cardDiv);
-    // if (cardDiv.classList.contains("card__item")) {
-    //   cardDiv.classList.add("selected");
-    // }
+  // If long pressed on a task, select it
+  const itemDiv = e.target.closest(".card__item");
+  if (itemDiv) {
+    const t_id = Number(itemDiv.className.match(/card__item-(\d+)/)[1]);
+    selectedTasks[l_id].add(t_id);
   }
+  displayData(currentData.lists);
 }
 
 const longPressThreshold = 500;

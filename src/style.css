@@ -659,7 +659,7 @@ footer {
 .selected {
   background-color: var(--clr-hover-200);
   color: var(--clr-primary-100);
-  text-decoration: line-through underline;
+  text-decoration: underline;
 }
 
 @media screen and (max-width: 800px) {
