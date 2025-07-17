@@ -97,7 +97,7 @@ function displayData(data) {
                   : ""
               }">
               <div class="card__status"></div>
-              <div class="card__item-title" data-edit="task" data-lid="${
+              <div class="card__item-title | hideScrollbar" data-edit="task" data-lid="${
                 ele.l_id
               }" data-tid="${task.t_id}">${task.t_name}</div>
               <div class="card__remove"></div>

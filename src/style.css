@@ -151,28 +151,24 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
 }
 .main__header-info > div {
   display: flex;
   align-items: center;
   gap: 1.8rem;
-  max-width: 50dvw;
   cursor: default;
+}
+.currentInfo,
+.labelDate {
+  flex-shrink: 0;
 }
 
 #u_name:hover {
   cursor: pointer;
   color: var(--clr-btn-100);
 }
-.labelWelcome {
-  overflow: auto;
-  /* Hiding the scrollbar  */
-  scrollbar-width: none; /* For Firefox */
-  -ms-overflow-style: none; /* For Internet Explorer and Edge */
-  &::-webkit-scrollbar {
-    display: none; /* For Chrome, Safari, and Opera */
-  }
-}
+
 .labelWether {
   display: flex;
   gap: 0.2rem;
@@ -503,6 +499,10 @@ main {
   margin-right: 0.5rem;
 }
 
+.card__item-title {
+  width: 75%;
+}
+
 .completed .card__status {
   background-image: url("../images/checkbox_checked.svg");
 }
@@ -660,6 +660,14 @@ footer {
   background-color: var(--clr-hover-200);
   color: var(--clr-primary-100);
   text-decoration: underline;
+}
+
+.hideScrollbar {
+  overflow: auto;
+  /* Hiding the scrollbar  */
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  text-overflow: ellipsis;
 }
 
 @media screen and (max-width: 800px) {
