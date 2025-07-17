@@ -266,8 +266,9 @@ mainBodyEle.addEventListener("click", (e) => {
   }
 
   if (e.target.closest(".card__header-selecNone")) {
-    // Deselect all tasks in this list
-    selectedTasks[l_id] = new Set();
+    // Clear selection mode and hide selection buttons
+    selection = false;
+    selectedTasks = {};
     displayData(currentData.lists);
     return;
   }
