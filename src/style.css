@@ -163,7 +163,7 @@ main {
   cursor: pointer;
   color: var(--clr-btn-100);
 }
-.labelWelcome{
+.labelWelcome {
   overflow: auto;
   /* Hiding the scrollbar  */
   scrollbar-width: none; /* For Firefox */
@@ -180,9 +180,8 @@ main {
 
 .main__header-action {
   display: grid;
-  grid-template-columns: .5fr 1fr auto;
-  grid-template-areas:
-    "addList search transform";
+  grid-template-columns: 0.5fr 1fr auto;
+  grid-template-areas: "addList search transform";
 
   align-items: center;
   justify-content: space-between;
@@ -198,7 +197,6 @@ main {
   /* flex-grow: 1; */
   grid-area: addList;
   max-width: 300px;
-
 }
 .addList > button {
   width: 100%;
@@ -326,7 +324,7 @@ main {
 }
 
 @media (max-width: 600px) {
-  .main__header-info{
+  .main__header-info {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
@@ -336,21 +334,20 @@ main {
     max-width: 100%;
   }
 
-  .main__header-action{
+  .main__header-action {
     grid-template-columns: 1fr;
     grid-template-areas:
       "addList addList"
       "search transform";
-      gap: 0.5rem;
+    gap: 0.5rem;
   }
   .addList {
     max-width: 100%;
   }
-  .search input{
+  .search input {
     width: 100%;
   }
 }
-
 
 /* List container  */
 .main__body {
@@ -490,6 +487,18 @@ main {
   margin-right: 0.5rem;
 }
 
+/* Displaying cross on touch divices */
+@media (pointer: coarse) {
+  .card__remove {
+    background-image: url("../images/cross.svg");
+    background-size: cover;
+    width: 1.2rem;
+    height: 1.2rem;
+    display: inline-block;
+    margin-left: auto;
+    margin-right: 0.5rem;
+  }
+}
 .card__remove:hover {
   cursor: pointer;
   border: 0.2px solid var(--clr-btn-200);
@@ -611,9 +620,9 @@ footer {
 }
 
 @media screen and (max-width: 800px) {
-  main{
+  main {
     padding: 1rem;
-  }  
+  }
 }
 
 @media screen and (max-width: 600px) {
