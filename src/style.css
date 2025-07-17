@@ -155,7 +155,14 @@ main {
   display: flex;
   align-items: center;
   gap: 1.8rem;
+  max-width: 50dvw;
+  cursor: default;
 }
+#u_name:hover {
+  cursor: pointer;
+  color: var(--clr-btn-100);
+}
+
 .labelWether {
   display: flex;
   gap: 0.2rem;
@@ -208,6 +215,14 @@ main {
 }
 .search input:focus {
   outline: none;
+}
+.search input::placeholder {
+  color: var(--clr-btn-200);
+  opacity: 0.8;
+}
+.search input:hover {
+  cursor: text;
+  background-color: var(--clr-hover-100);
 }
 
 /* Transform */
@@ -288,7 +303,7 @@ main {
 }
 
 .transform-sort:hover .overlay-sort,
-.transform-filter:hover .overlay-filter { 
+.transform-filter:hover .overlay-filter {
   opacity: 1;
   visibility: visible;
 }
@@ -453,12 +468,22 @@ main {
 
 .inline-edit-list-title,
 .inline-edit-task-title,
-.inline-edit-list-date {
+.inline-edit-list-date,
+.inline-edit-user-name {
   outline: none;
   border: none;
   font-family: inherit;
   font-size: inherit;
+  display: inline;
+  max-width: fit-content;
   padding: 0;
+}
+.inline-edit-user-name {
+  width: 50%;
+  max-width: 200px;
+  background-color: transparent;
+  color: var(--clr-btn-200);
+  transition: border-color 0.2s;
 }
 
 /* Footer */

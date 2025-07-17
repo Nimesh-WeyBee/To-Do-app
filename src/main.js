@@ -11,6 +11,7 @@ import {
   currentData,
   fetchData,
   saveData,
+  editUserName,
 } from "./operations.js";
 
 const mainBodyEle = document.querySelector(".main__body");
@@ -91,10 +92,12 @@ function displayData(data) {
 }
 
 // Set user name from data
-function setUserName(data) {
-  document.querySelector(
-    ".labelWelcome"
-  ).textContent = `Hello, ${data.u_name}!`;
+function displayUserName(u_name) {
+  document.querySelector(".labelWelcome").innerHTML = `
+            <div>
+              Hello,<span id="u_name">${u_name}!</span>
+            </div>`;
+  initEditUserName();
 }
 
 // Set current date in header
@@ -435,6 +438,31 @@ document.querySelectorAll(".overlay-filter > li").forEach((li) => {
   });
 });
 
+function initEditUserName() {
+  const labelUserName = document.querySelector("#u_name");
+  labelUserName.addEventListener("click", () => {
+    const input = document.createElement("input");
+    input.type = "text";
+    input.className = "inline-edit-user-name";
+    const oldName = labelUserName.textContent.replace("!", "");
+    input.value = oldName;
+    labelUserName.parentNode.replaceChild(input, labelUserName);
+    input.focus();
+
+    input.addEventListener("blur", () => {
+      if (input.value.trim() && input.value !== oldName) {
+        editUserName(input.value.trim());
+      }
+      displayUserName(currentData.u_name);
+    });
+    input.addEventListener("keydown", (ev) => {
+      if (ev.key === "Enter") {
+        input.blur();
+      }
+    });
+  });
+}
+
 // Update searchbar event listener
 const searchInput = document.querySelector(".search input[type='search']");
 searchInput.addEventListener("input", (e) => {
@@ -444,7 +472,7 @@ searchInput.addEventListener("input", (e) => {
 document.addEventListener("DOMContentLoaded", () => {
   syncData();
   displayFilteredAndSorted();
-  setUserName(currentData);
+  displayUserName(currentData.u_name);
   setCurrentDate();
   setCurrentWeather();
 });

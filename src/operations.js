@@ -92,6 +92,13 @@ function deleteTask(l_id, t_id) {
   }
 }
 
+function editUserName(u_name) {
+  if (u_name && u_name !== currentData.u_name) {
+    currentData.u_name = u_name;
+    saveData(currentData);
+  }
+}
+
 export {
   insertList,
   insertTask,
@@ -104,4 +111,5 @@ export {
   currentData,
   fetchData,
   saveData,
+  editUserName,
 };
