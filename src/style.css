@@ -6,6 +6,7 @@
   --clr-accent-500: hsla(0, 0%, 93%, 1);
 
   --clr-hover-100: hsla(0, 0%, 90%, 0.5);
+  --clr-hover-200: hsla(0, 0%, 0%, 0.2);
 
   --clr-primary-100: hsla(0, 0%, 100%, 1);
 
@@ -415,7 +416,15 @@ main {
 }
 
 /* Date */
-.card__header-dateContainer {
+.card__header-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.card__header-action > * {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -440,6 +449,28 @@ main {
   color: var(--clr-btn-200);
 }
 
+/* card selection */
+.card__header-selectorContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card__header-selectorContainer > * {
+  /*All icons*/
+  cursor: pointer;
+  width: 1.2rem;
+  height: 1.2rem;
+  display: inline-block;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.card__header-selectorContainer > *:hover {
+  scale: 1.1;
+  transition: all 0.2s;
+}
+
 /* Card body */
 
 .card__body {
@@ -454,10 +485,12 @@ main {
   gap: 0.2rem;
   padding: 0.2rem;
   border-radius: 0.2rem;
+  transition: all 0.2s;
 }
 .card__body > div:hover {
   cursor: pointer;
   background-color: var(--clr-hover-100);
+  color: var(--clr-btn-200);
 }
 
 .card__status {
@@ -617,6 +650,16 @@ footer {
 }
 .fs-body {
   font-size: 0.875rem;
+}
+
+.hide {
+  display: none;
+}
+
+.selected {
+  background-color: var(--clr-hover-200);
+  color: var(--clr-primary-100);
+  text-decoration: line-through underline;
 }
 
 @media screen and (max-width: 800px) {

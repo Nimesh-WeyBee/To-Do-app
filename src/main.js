@@ -16,6 +16,8 @@ import {
 
 const mainBodyEle = document.querySelector(".main__body");
 
+let selection = false;
+
 function calcDate(dateStr) {
   if (!dateStr) return "Select date";
   const inputDate = new Date(dateStr);
@@ -59,11 +61,26 @@ function displayData(data) {
               </div>
             </div>
 
-            <div class="card__header-dateContainer">
-              <div class="card__header-dateIcon">
-                <img src="images/calender.svg" alt="" />
+            <div class="card__header-action">
+              <div class="card__header-dateContainer">
+                <div class="card__header-dateIcon">
+                  <img src="images/calender.svg" alt="" />
+                </div>
+                <div class="card__header-date">${dateLabel}</div>
               </div>
-              <div class="card__header-date">${dateLabel}</div>
+              <div class="card__header-selectorContainer ${
+                !selection ? "hide" : ""
+              }">
+                <div class="card__header-selectAll ">
+                  <img src="images/check-all.svg">
+                </div>
+                <div class="card__header-selecNone">
+                  <img src="images/uncheck-all.svg">
+                </div>
+                <div class="card__header-deleteSelection">
+                  <img src="images/delete-all.png">
+                </div>
+              </div>
             </div>
           </div>
           <div class="card__body">
@@ -231,8 +248,24 @@ mainBodyEle.addEventListener("click", (e) => {
   if (!card) return;
   const l_id = Number(card.id);
 
-  // Date picker for list date
+  // handling selection
+  if (e.target.closest(".card__header-selectAll")) {
+    console.log("Handel select all");
+  }
+
+  if (e.target.closest(".card__header-selecNone")) {
+    console.log("select none");
+  }
+
+  if (e.target.closest(".card__header-deleteSelection")) {
+    console.log("delete selection");
+  }
+
+  // returning when we are selecting
+  if (selection) return;
+
   if (e.target.closest(".card__header-dateContainer")) {
+    // Date picker for list date
     const dateDiv = card.querySelector(".card__header-date");
     if (!dateDiv) return;
     const list = currentData.lists.find((l) => l.l_id === l_id);
@@ -410,6 +443,63 @@ mainBodyEle.addEventListener("submit", (e) => {
     displayData(currentData.lists);
     input.value = "";
   }
+});
+
+function selectionHandler(e) {
+  const card = e.target.closest(".main__body-card");
+  if (!card) return;
+
+  console.log(e.target);
+
+  selection = true;
+
+  card
+    .querySelector(".card__header-selectorContainer")
+    .classList.remove("hide");
+
+  const closestBody = e.target.closest(".card__body");
+  if (closestBody) {
+    const title = e.target.querySelector(".card__item-title");
+    console.log(title);
+    const l_id = Number(title.dataset.lid);
+    const t_id = Number(title.dataset.tid);
+
+    console.log(closestBody, t_id);
+
+    const cardDiv = closestBody.querySelector(`card__item-${t_id}`);
+    console.log(cardDiv);
+    // if (cardDiv.classList.contains("card__item")) {
+    //   cardDiv.classList.add("selected");
+    // }
+  }
+}
+
+const longPressThreshold = 500;
+let pressTimer;
+
+mainBodyEle.addEventListener("mousedown", (e) => {
+  pressTimer = setTimeout(() => {
+    selectionHandler(e);
+  }, longPressThreshold);
+});
+mainBodyEle.addEventListener("mouseup", () => {
+  clearTimeout(pressTimer);
+});
+mainBodyEle.addEventListener("touchstart", (e) => {
+  pressTimer = setTimeout(() => {
+    selectionHandler(e);
+  }, longPressThreshold);
+});
+mainBodyEle.addEventListener("touchend", () => {
+  clearTimeout(pressTimer);
+});
+
+mainBodyEle.addEventListener("mouseleave", () => {
+  clearTimeout(pressTimer);
+});
+
+mainBodyEle.addEventListener("touchcancel", () => {
+  clearTimeout(pressTimer);
 });
 
 // Add event listener for Add List button
