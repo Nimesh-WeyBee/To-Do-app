@@ -563,6 +563,7 @@ main {
   display: inline;
   max-width: fit-content;
   padding: 0;
+  width: 80%;
 }
 .inline-edit-user-name {
   width: 26dvw;
