@@ -109,6 +109,12 @@ select {
   }
 }
 
+body{
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
 /* Header */
 header {
   background-image: var(--greadent-title);
@@ -129,18 +135,17 @@ header {
 
 /* Body */
 main {
+  align-self: center;
+  flex: 1;
+  width: 100%;
   padding: 2rem;
-  max-width: 1000px;
-  margin: 0 auto;
-
+  max-width: 1200px;
   background-color: var(--clr-primary-100);
 
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   gap: 1.5rem;
-  /* min-height: 84dvh; */
-  width: fill-available;
 }
 
 .main__header {
